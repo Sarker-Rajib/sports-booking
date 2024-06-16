@@ -14,6 +14,19 @@ const createFacility = catchAsync(async (req, res) => {
   });
 });
 
+const getAllFacility = catchAsync(async (req, res) => {
+  const data = req.body;
+  const result = await facilityServices.getAllFAcilityFromDB();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Facilities retrieved successfully",
+    data: result,
+  });
+});
+
 export const FacilityController = {
   createFacility,
+  getAllFacility,
 };

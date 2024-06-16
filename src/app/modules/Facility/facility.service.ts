@@ -15,6 +15,12 @@ const createFacilityIntoDb = async (facilityData: TFacility) => {
   return userData;
 };
 
+const getAllFAcilityFromDB = async () => {
+  const result = await Facility.find({}).select("-createdAt -updatedAt -__v");
+  return result;
+};
+
 export const facilityServices = {
   createFacilityIntoDb,
+  getAllFAcilityFromDB,
 };

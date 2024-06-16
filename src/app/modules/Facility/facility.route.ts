@@ -11,4 +11,6 @@ router.post(
   FacilityController.createFacility
 );
 
+router.get("/", FacilityController.getAllFacility);
+
 export const FacilityRouter = router;
