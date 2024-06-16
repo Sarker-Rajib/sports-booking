@@ -12,20 +12,19 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const mongoose_1 = __importDefault(require("mongoose"));
-const app_1 = __importDefault(require("./app"));
-const myConfig_1 = __importDefault(require("./app/myConfig"));
-function main() {
-    return __awaiter(this, void 0, void 0, function* () {
-        try {
-            yield mongoose_1.default.connect(myConfig_1.default.DBURL);
-            app_1.default.listen(myConfig_1.default.port, () => {
-                console.log(`Sports booking server running on port ${myConfig_1.default.port}`);
-            });
-        }
-        catch (error) {
-            console.log("Failed to start server:", error);
-        }
+exports.UserController = void 0;
+const user_service_1 = require("./user.service");
+const catchAsync_1 = __importDefault(require("../../utils/catchAsync"));
+const response_1 = __importDefault(require("../../utils/response"));
+const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield user_service_1.userServices.createUserIntoDb(req.body);
+    (0, response_1.default)(res, {
+        statusCode: 200,
+        success: true,
+        message: "Student are retrieved succesfully",
+        data: result,
     });
-}
-main();
+}));
+exports.UserController = {
+    createUser,
+};
