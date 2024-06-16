@@ -1,22 +1,20 @@
 import { Router } from "express";
-import { UserController } from "./user.controller";
-import { userValidatorZod } from "./user.validation";
+import { loginValidatorZod, userValidatorZod } from "./userAuth.validation";
 import inputDataValidator from "../../middlewares/validateRequest";
-import { loginValidatorZod } from "../Auth/auth.validator";
-import { authController } from "../Auth/auth.controller";
+import { userAuthController } from "./userAuth.controller";
 
 const router = Router();
 
 router.post(
   "/signup",
   inputDataValidator(userValidatorZod),
-  UserController.createUser
+  userAuthController.createUser
 );
 
 router.post(
   "/login",
   inputDataValidator(loginValidatorZod),
-  authController.login
+  userAuthController.login
 );
 
 export const UserRouter = router;

@@ -12,12 +12,17 @@ export interface TUser {
 }
 
 export interface UserModel extends Model<TUser> {
-  //find user
+  //find user by email
   isUserExistsByEmail(email: string): Promise<TUser>;
 
-  // match password
+  // match password for logging user
   isPasswordMatched(
     plainTextPassword: string,
     hashedPassword: string
   ): Promise<boolean>;
 }
+
+export type TLogin = {
+  email: string;
+  password: string;
+};
