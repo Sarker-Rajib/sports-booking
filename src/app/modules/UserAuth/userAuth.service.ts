@@ -36,18 +36,9 @@ const userLogin = async (loginData: TLogin) => {
     { expiresIn: "1d" }
   );
 
-  const userData: any = user;
-
   return {
     accessToken,
-    userData: {
-      _id: userData._id,
-      name: userData.name,
-      email: userData.email,
-      role: userData.role,
-      phone: userData.phone,
-      address: userData.address,
-    },
+    user,
   };
 };
 

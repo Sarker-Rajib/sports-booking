@@ -16,15 +16,24 @@ const createUser: RequestHandler = catchAsync(async (req, res) => {
 
 const login: RequestHandler = catchAsync(async (req, res) => {
   const result = await userAuthServices.userLogin(req.body);
+  const { accessToken, user } = result;
 
-  const { userData } = result;
+  const userWithPass: any = user;
+  const { _id, name, email, phone, role, address } = userWithPass;
 
   res.json({
     success: true,
     statusCode: 200,
     message: "User is logged in succesfully",
-    token: result.accessToken,
-    data: userData,
+    token: accessToken,
+    data: {
+      _id,
+      name,
+      email,
+      phone,
+      role,
+      address,
+    },
   });
 });
 
