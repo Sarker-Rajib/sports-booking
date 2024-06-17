@@ -13,6 +13,6 @@ router.post(
   FacilityController.createFacility
 );
 
-router.get("/", FacilityController.getAllFacility);
+router.get("/", verifyAdmin, FacilityController.getAllFacility);
 
 export const FacilityRouter = router;

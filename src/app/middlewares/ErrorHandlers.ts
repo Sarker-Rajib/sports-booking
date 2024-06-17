@@ -18,18 +18,22 @@ export class AppError extends Error {
 }
 
 export const handleZodError = (err: ZodError): TGenericErrorResponse => {
-  const errorSources: TErrorSources = err.issues.map((issue: ZodIssue) => {
-    return {
-      path: issue?.path[issue.path.length - 1],
-      message: issue.message,
-    };
-  });
+  const ierr = err.issues;
 
-  const statusCode = 400;
+  let errorSources: TErrorSources = [];
+  let message = "";
+
+  for (let i = 0; i < ierr.length; i++) {
+    const srr = {
+      path: ierr[i].path[ierr[i].path.length - 1],
+      message: ierr[i].message,
+    };
+    errorSources.push(srr);
+    message = message + " " + ierr[i].message;
+  }
 
   return {
-    statusCode,
-    message: "Validation Error",
+    message: `Zod Error : ${message}`,
     errorSources,
   };
 };
@@ -46,10 +50,7 @@ export const handleValidationError = (
     }
   );
 
-  const statusCode = 400;
-
   return {
-    statusCode,
     message: "Validation Error",
     errorSources,
   };
@@ -65,31 +66,24 @@ export const handleCastError = (
     },
   ];
 
-  const statusCode = 400;
-
   return {
-    statusCode,
-    message: "Invalid ID",
+    message: err.message,
     errorSources,
   };
 };
 
 export const handleDuplicateError = (err: any): TGenericErrorResponse => {
   const match = err.message.match(/"([^"]*)"/);
-  const extractedMessage = match && match[1];
 
   const errorSources: TErrorSources = [
     {
       path: "",
-      message: `${extractedMessage} is already exists`,
+      message: match?.input,
     },
   ];
 
-  const statusCode = 400;
-
   return {
-    statusCode,
-    message: "Invalid ID",
+    message: match?.input,
     errorSources,
   };
 };

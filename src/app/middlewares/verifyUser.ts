@@ -1,7 +1,6 @@
 import myConfig from "../myConfig";
 import catchAsync from "../utils/catchAsync";
 import jwt from "jsonwebtoken";
-import { AppError } from "./ErrorHandlers";
 
 type jwtDataX = {
   email: string;
@@ -10,7 +9,7 @@ type jwtDataX = {
   exp: number;
 };
 
-export const verifyAdmin = catchAsync(async (req, res, next) => {
+export const verifyUser = catchAsync(async (req, res, next) => {
   const authData = req.headers.authorization;
   const token = authData?.split(" ")[1];
 
@@ -23,10 +22,14 @@ export const verifyAdmin = catchAsync(async (req, res, next) => {
     myConfig.JWT_ACCESS_SECRET as string
   );
 
-  const { email, role } = tokenDecodedData as jwtDataX;
+  const { role } = tokenDecodedData as jwtDataX;
 
-  if (role !== "admin") {
-    throw new AppError(402, "You are not authorized to access this route");
+  if (!role) {
+    res.status(400).json({
+      success: false,
+      statusCode: 401,
+      message: "You have no access to this route",
+    });
   }
 
   next();
