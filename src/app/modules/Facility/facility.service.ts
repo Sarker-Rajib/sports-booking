@@ -16,11 +16,36 @@ const createFacilityIntoDb = async (facilityData: TFacility) => {
 };
 
 const getAllFAcilityFromDB = async () => {
-  const result = await Facility.find({}).select("-createdAt -updatedAt -__v");
+  const result = await Facility.find({ isDeleted: false }).select(
+    "-createdAt -updatedAt -__v"
+  );
+  return result;
+};
+
+const updateFAcilityintoDB = async (
+  facilityId: string,
+  data: Partial<TFacility>
+) => {
+  const result = await Facility.findOneAndUpdate({ _id: facilityId }, data, {
+    new: true,
+  });
+  return result;
+};
+
+const deleteFAcilityfromDB = async (facilityId: string) => {
+  const result = await Facility.findOneAndUpdate(
+    { _id: facilityId },
+    { isDeleted: true },
+    {
+      new: true,
+    }
+  ).select("-createdAt -updatedAt -__v");
   return result;
 };
 
 export const facilityServices = {
   createFacilityIntoDb,
   getAllFAcilityFromDB,
+  updateFAcilityintoDB,
+  deleteFAcilityfromDB,
 };
