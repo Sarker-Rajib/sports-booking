@@ -3,7 +3,7 @@ import { FacilityController } from "./facility.controller";
 import inputDataValidator from "../../middlewares/validateRequest";
 import { FacilityValidator } from "./facility.validation";
 import { verifyAdmin } from "../../middlewares/verifyAdmin";
-import { verifyUser } from "../../middlewares/verifyUser";
+import { verifyUser } from "../../middlewares/verifyUsers";
 
 const router = Router();
 
