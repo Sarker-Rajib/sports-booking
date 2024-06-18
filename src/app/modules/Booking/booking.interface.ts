@@ -1,11 +1,11 @@
-import { Schema } from "mongoose";
+import { Types } from "mongoose";
 
-type TBooking = {
+export type TBooking = {
   date: Date;
-  startTime: Date;
-  endTime: Date;
-  user: Schema.Types.ObjectId;
-  facility: Schema.Types.ObjectId;
+  startTime: string;
+  endTime: string;
+  user: Types.ObjectId;
+  facility: Types.ObjectId;
   payableAmount: number;
   isBooked: "confirmed" | "unconfirmed" | "canceled";
 };
