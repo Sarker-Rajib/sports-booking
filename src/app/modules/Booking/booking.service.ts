@@ -1,5 +1,3 @@
-import { AppError } from "../../middlewares/ErrorHandlers";
-import { User } from "../UserAuth/userAuth.model";
 import { TBooking } from "./booking.interface";
 import { Booking } from "./booking.model";
 
@@ -8,18 +6,24 @@ const createBookingIntoDb = async (bookingData: TBooking) => {
   return result;
 };
 
-const findUserFromDb = async (email: string) => {
-  const user = await User.findOne({ email: email });
-  const result = user?._id;
+const findBookingsFromDb = async () => {
+  const result = await Booking.find().populate('facility').populate('user')
+  return result;
+};
 
-  if (result === undefined) {
-    throw new AppError(400, "User not found");
-  }
+const findBookingsByUserFromDb = async (userId: any) => {
+  const result = await Booking.find({ user: userId }).populate('facility').populate('user')
+  return result;
+};
 
+const calcelBookingFromDb = async (bookingId: string) => {
+  const result = await Booking.findOneAndUpdate({ _id: bookingId }, { isBooked: "canceled" }, { new: true }).populate('facility')
   return result;
 };
 
 export const BookingServices = {
   createBookingIntoDb,
-  findUserFromDb,
+  findBookingsFromDb,
+  findBookingsByUserFromDb,
+  calcelBookingFromDb
 };

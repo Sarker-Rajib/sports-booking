@@ -1,25 +1,16 @@
-import { jwtDataX } from "../../middlewares/verifyOnlyUser";
-import myConfig from "../../myConfig";
 import catchAsync from "../../utils/catchAsync";
+import { findUserFromDb } from "../../utils/getUser";
 import sendResponse from "../../utils/response";
 import { BookingServices } from "./booking.service";
-import jwt from "jsonwebtoken";
 
 const createBooking = catchAsync(async (req, res) => {
-  // ---------------------------
+  // ---------------------------  
   const authData = req.headers.authorization;
-  const token = authData?.split(" ")[1];
-  const tokenDecodedData = jwt.verify(
-    token as string,
-    myConfig.JWT_ACCESS_SECRET as string
-  );
-  const { email } = tokenDecodedData as jwtDataX;
-  const userId = await BookingServices.findUserFromDb(email);
-  // ---------------------------
-
+  const reqUser = await findUserFromDb(authData as string)
+  const userId = reqUser._id
   const data = req.body;
   const bookingData = { ...data, user: userId, payableAmount: 40 };
-
+  // --
   const result = await BookingServices.createBookingIntoDb(bookingData);
 
   sendResponse(res, {
@@ -30,6 +21,45 @@ const createBooking = catchAsync(async (req, res) => {
   });
 });
 
+const getAllBookings = catchAsync(async (req, res) => {
+  const result = await BookingServices.findBookingsFromDb();
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Bookings retrieved successfully",
+    data: result,
+  });
+});
+
+const getBookingsByUser = catchAsync(async (req, res) => {
+  const authData = req.headers.authorization;
+  const reqUser = await findUserFromDb(authData as string)
+  const result = await BookingServices.findBookingsByUserFromDb(reqUser._id);
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Bookings retrieved successfully",
+    data: result,
+  });
+});
+
+const deleteBooking = catchAsync(async (req, res) => {
+  const reqId = req.params.id
+  const result = await BookingServices.calcelBookingFromDb(reqId)
+
+  sendResponse(res, {
+    success: true,
+    statusCode: 200,
+    message: "Bookings retrieved successfully",
+    data: result,
+  });
+});
+
 export const BookingController = {
   createBooking,
+  getAllBookings,
+  getBookingsByUser,
+  deleteBooking
 };

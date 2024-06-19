@@ -1,6 +1,8 @@
+import { User } from "../modules/UserAuth/userAuth.model";
 import myConfig from "../myConfig";
 import catchAsync from "../utils/catchAsync";
 import jwt from "jsonwebtoken";
+import { AppError } from "./ErrorHandlers";
 
 type jwtDataX = {
   email: string;
@@ -22,7 +24,12 @@ export const verifyUser = catchAsync(async (req, res, next) => {
     myConfig.JWT_ACCESS_SECRET as string
   );
 
-  const { role } = tokenDecodedData as jwtDataX;
+  const { email, role } = tokenDecodedData as jwtDataX;
+
+  const userFromDatabase = await User.findOne({ email });
+  if (userFromDatabase === null) {
+    throw new AppError(400, "You are not a valid user");
+  }
 
   if (!role) {
     res.status(400).json({
