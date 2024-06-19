@@ -16,9 +16,7 @@ const createFacilityIntoDb = async (facilityData: TFacility) => {
 };
 
 const getAllFAcilityFromDB = async () => {
-  const result = await Facility.find({ isDeleted: false }).select(
-    "-createdAt -updatedAt -__v"
-  );
+  const result = await Facility.find({ isDeleted: false }).select("-__v");
   return result;
 };
 
@@ -28,7 +26,7 @@ const updateFAcilityintoDB = async (
 ) => {
   const result = await Facility.findOneAndUpdate({ _id: facilityId }, data, {
     new: true,
-  });
+  }).select("-__v");
   return result;
 };
 
@@ -39,7 +37,7 @@ const deleteFAcilityfromDB = async (facilityId: string) => {
     {
       new: true,
     }
-  ).select("-createdAt -updatedAt -__v");
+  ).select("-__v");
   return result;
 };
 

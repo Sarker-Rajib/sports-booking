@@ -25,10 +25,24 @@ const createFacilityIntoDb = (facilityData) => __awaiter(void 0, void 0, void 0,
     return userData;
 });
 const getAllFAcilityFromDB = () => __awaiter(void 0, void 0, void 0, function* () {
-    const result = yield facility_model_1.Facility.find({}).select("-createdAt -updatedAt -__v");
+    const result = yield facility_model_1.Facility.find({ isDeleted: false }).select("-__v");
+    return result;
+});
+const updateFAcilityintoDB = (facilityId, data) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield facility_model_1.Facility.findOneAndUpdate({ _id: facilityId }, data, {
+        new: true,
+    }).select("-__v");
+    return result;
+});
+const deleteFAcilityfromDB = (facilityId) => __awaiter(void 0, void 0, void 0, function* () {
+    const result = yield facility_model_1.Facility.findOneAndUpdate({ _id: facilityId }, { isDeleted: true }, {
+        new: true,
+    }).select("-__v");
     return result;
 });
 exports.facilityServices = {
     createFacilityIntoDb,
     getAllFAcilityFromDB,
+    updateFAcilityintoDB,
+    deleteFAcilityfromDB,
 };

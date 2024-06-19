@@ -32,11 +32,12 @@ export const verifyUser = catchAsync(async (req, res, next) => {
   }
 
   if (!role) {
-    res.status(400).json({
+    res.status(401).json({
       success: false,
       statusCode: 401,
       message: "You have no access to this route",
     });
+    return;
   }
 
   next();

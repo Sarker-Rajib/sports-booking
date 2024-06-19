@@ -40,17 +40,9 @@ const userLogin = (loginData) => __awaiter(void 0, void 0, void 0, function* () 
         role: user.role,
     };
     const accessToken = jsonwebtoken_1.default.sign(jwtPayload, myConfig_1.default.JWT_ACCESS_SECRET, { expiresIn: "1d" });
-    const userData = user;
     return {
         accessToken,
-        userData: {
-            _id: userData._id,
-            name: userData.name,
-            email: userData.email,
-            role: userData.role,
-            phone: userData.phone,
-            address: userData.address,
-        },
+        user,
     };
 });
 exports.userAuthServices = {

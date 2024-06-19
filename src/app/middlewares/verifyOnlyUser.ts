@@ -32,11 +32,7 @@ export const verifyOnlyUser = catchAsync(async (req, res, next) => {
   }
 
   if (role !== "user") {
-    res.status(400).json({
-      success: false,
-      statusCode: 401,
-      message: "You have no access to this route",
-    });
+    throw new AppError(400, "You have no access to this route");
   }
 
   next();

@@ -6,6 +6,7 @@ const FacilitySchema = new mongoose_1.Schema({
     name: {
         type: String,
         unique: true,
+        trim: true,
         required: true,
     },
     description: {
@@ -24,7 +25,5 @@ const FacilitySchema = new mongoose_1.Schema({
         type: Boolean,
         default: false,
     },
-}, {
-    timestamps: true,
 });
 exports.Facility = (0, mongoose_1.model)("Facility", FacilitySchema);

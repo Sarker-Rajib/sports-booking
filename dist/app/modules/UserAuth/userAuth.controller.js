@@ -27,13 +27,22 @@ const createUser = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, voi
 }));
 const login = (0, catchAsync_1.default)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const result = yield userAuth_service_1.userAuthServices.userLogin(req.body);
-    const { userData } = result;
+    const { accessToken, user } = result;
+    const userWithPass = user;
+    const { _id, name, email, phone, role, address } = userWithPass;
     res.json({
         success: true,
         statusCode: 200,
         message: "User is logged in succesfully",
-        token: result.accessToken,
-        data: userData,
+        token: accessToken,
+        data: {
+            _id,
+            name,
+            email,
+            phone,
+            role,
+            address,
+        },
     });
 }));
 exports.userAuthController = {

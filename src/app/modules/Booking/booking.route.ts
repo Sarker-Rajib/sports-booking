@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { BookingController } from "./bookingController";
+import { BookingController } from "./booking.controller";
 import { verifyOnlyUser } from "../../middlewares/verifyOnlyUser";
 import inputDataValidator from "../../middlewares/validateRequest";
 import { bookingValidator } from "./booking.validation";
@@ -14,22 +14,10 @@ router.post(
   BookingController.createBooking
 );
 
-router.get(
-  "/",
-  verifyAdmin,
-  BookingController.getAllBookings
-);
+router.get("/", verifyAdmin, BookingController.getAllBookings);
 
-router.get(
-  "/user",
-  verifyOnlyUser,
-  BookingController.getBookingsByUser
-);
+router.get("/user", verifyOnlyUser, BookingController.getBookingsByUser);
 
-router.delete(
-  "/:id",
-  verifyOnlyUser,
-  BookingController.deleteBooking
-);
+router.delete("/:id", verifyOnlyUser, BookingController.cancelBooking);
 
 export const BookingRouter = router;
